@@ -69,15 +69,10 @@ func NATSInit(session *discordgo.Session, nc *nats.Conn) {
 				panic(err)
 			}
 		}
-		Online := 0
-		Offline := 0
-		for _, v := range DiscordGuild.Presences {
-			if v.Status == "offline" {
-				Offline++
-			} else {
-				Online++
-			}
-		}
+
+		Online := len(DiscordGuild.Presences)
+		Offline := DiscordGuild.MemberCount - Online
+
 		DefaultChannel := DiscordGuild.Channels[0].ID
 		for _, v := range DiscordGuild.Channels {
 			if strings.Contains(strings.ToLower(v.Name), "rules") || strings.Contains(strings.ToLower(v.Name), "general") {
