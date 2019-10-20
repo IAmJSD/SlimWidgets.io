@@ -29,9 +29,11 @@
                         <p style="color: white">
                             <b>{{ .GuildName }}</b>
                         </p>
+                        {{ if .Description }}
                         <p style="color: white; font-size: 15px; line-height: 15px; margin-bottom: 5px;">
                             {{ .Description }}
                         </p>
+                        {{ end }}
                         <hr style="margin-left: 10px; margin-top: 0px; margin-bottom: 0px;">
                         <p style="color: #80FF00; margin-top: 10px">
                             <b id="online">{{ .Counts.Online }} Online</b>
@@ -56,9 +58,11 @@
                             </p>
                         </td>
                         <td style="width: 70%; text-align: right; padding-right: 10px;">
+                            {{ if .InviteURL }}
                             <p style="margin-top: 12px;">
                                 <b><a href="{{ .InviteURL }}" style="text-decoration: none; color: #7289DA;">Join this Discord server</a></b>
                             </p>
+                            {{ end }}
                         </td>
                     </tr>
                 </tbody>
