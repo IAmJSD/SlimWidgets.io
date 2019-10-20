@@ -37,11 +37,19 @@ func CreateNewMenu(MenuID string, msg discordgo.Message, client *discordgo.Sessi
 		if err != nil {
 			panic(err)
 		}
+		var EnableDisableInvites string
+		if Guild.Invites {
+			EnableDisableInvites = "Disable Invites"
+		} else {
+			EnableDisableInvites = "Enable Invites"
+		}
+		menu.Reactions.ReactionSlice[0].button.Name = EnableDisableInvites
 		menu.Display(ChannelID, MessageID, client)
 	}
 
 	SetDescription := func(ChannelID string, MessageID string, menu *EmbedMenu, client *discordgo.Session) {
 		defer menu.Display(ChannelID, MessageID, client)
+		_ = client.MessageReactionsRemoveAll(ChannelID, MessageID)
 
 		embed := &discordgo.MessageEmbed{
 			Title: "Waiting for your description...",
@@ -60,6 +68,7 @@ func CreateNewMenu(MenuID string, msg discordgo.Message, client *discordgo.Sessi
 		if UserMessage == nil {
 			return
 		}
+		_ = client.ChannelMessageDelete(ChannelID, UserMessage.ID)
 
 		_, err = r.Table("guilds").Get(Guild.Id).Update(map[string]interface{}{
 			"description": UserMessage.Content,
@@ -91,9 +100,9 @@ func CreateNewMenu(MenuID string, msg discordgo.Message, client *discordgo.Sessi
 
 	var EnableDisableInvites string
 	if Guild.Invites {
-		EnableDisableInvites = "Enable Invites"
-	} else {
 		EnableDisableInvites = "Disable Invites"
+	} else {
+		EnableDisableInvites = "Enable Invites"
 	}
 	MainMenu.Reactions.Add(MenuReaction{
 		button:   MenuButton{
