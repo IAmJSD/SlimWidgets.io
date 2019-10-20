@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/valyala/fasthttp"
 	"io/ioutil"
 	"net/http"
@@ -79,7 +78,7 @@ func InviteCaptchaHandler(ctx *fasthttp.RequestCtx) {
 
 	if !Response["success"].(bool) {
 		ctx.Response.SetStatusCode(400)
-		ctx.SetBody([]byte(fmt.Sprintf("%v", Response["error-codes"].([]string))))
+		ctx.SetBody([]byte("Invalid reCaptcha code."))
 		return
 	}
 
