@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"io/ioutil"
 	"math"
 	"net/http"
 	"os"
@@ -35,8 +36,7 @@ func MakeInvite(Channel string) *string {
 
 	var ResponseJSON map[string]interface{}
 	defer Response.Body.Close()
-	var b []byte
-	_, err = Response.Body.Read(b)
+	b, err := ioutil.ReadAll(Response.Body)
 	if err != nil {
 		panic(err)
 	}
