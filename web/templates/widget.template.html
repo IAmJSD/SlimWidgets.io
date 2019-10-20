@@ -2,9 +2,86 @@
 <html lang="en">
     <head>
         <title>Widget - {{ .GuildName }}</title>
+        <style>
+            .footer {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 25%;
+                background-color: #333737;
+                color: white;
+            }
+            body {
+                font-family: "Arial", Times, serif;
+            }
+        </style>
     </head>
 
-    <body>
-        <h1>Widget here</h1>
+    <body style="background-color: black;">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <img src="{{ .GuildIcon }}" style="border-radius: 50%; width: 128px; height: 128px;"  alt="Guild Icon" />
+                    </td>
+                    <td style="text-align: right; width: 100%; line-height: 5px">
+                        <p style="color: white">
+                            <b>{{ .GuildName }}</b>
+                        </p>
+                        <p style="color: white; font-size: 10px; line-height: 10px; margin-bottom: 5px;">
+                            {{ .Description }}
+                        </p>
+                        <hr style="margin-left: 10px; margin-top: 0px; margin-bottom: 0px;">
+                        <p style="color: #80FF00; margin-top: 10px">
+                            <b id="online">{{ .Counts.Online }} Online</b>
+                        </p>
+                        <p style="color: red">
+                            <b id="offline">{{ .Counts.Online }} Offline</b>
+                        </p>
+                        <p style="color: white">
+                            <b id="in_voice">{{ .Counts.InVoice }} In Voice</b>
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer">
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td style="width: 30%; padding-left: 5px;">
+                            <p style="margin-top: 12px;">
+                                <b><a href="thing" style="text-decoration: none; color: white;">SlimWidgets.io</a></b>
+                            </p>
+                        </td>
+                        <td style="width: 70%; text-align: right; padding-right: 5px;">
+                            <p style="margin-top: 12px;">
+                                <b><a href="thing" style="text-decoration: none; color: #7289DA;">Join this Discord server</a></b>
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <script>
+            // Handles updating the user counts.
+            async function updateUserCounts() {
+                let res;
+                try {
+                    res = await fetch(`${window.location.href.replace(/\/$/g, "")}/json`);
+                } catch (e) {
+                    console.error(e);
+                    return;
+                }
+                if (res.ok) {
+                    const json = await res.json();
+                    document.getElementById("online").innerText = `${json.counts.online} Online`;
+                    document.getElementById("offline").innerText = `${json.counts.offline} Offline`;
+                    document.getElementById("in_voice").innerText = `${json.counts.in_voice} In Voice`;
+                }
+            }
+            setInterval(updateUserCounts, 3000);
+        </script>
     </body>
 </html>

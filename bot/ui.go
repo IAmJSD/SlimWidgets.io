@@ -124,7 +124,7 @@ func CreateNewMenu(MenuID string, msg discordgo.Message, client *discordgo.Sessi
 
 	c := MainMenu.NewChildMenu(discordgo.MessageEmbed{
 		Title: "iFrame Code",
-		Description: fmt.Sprintf("To embed this iFrame, simply add the following code: ```html\n" + `<iframe src="https:/slimwidgets.io/widget/%s" width="350" height="400" allowtransparency="true" frameborder="0"></iframe>` + "\n```", msg.GuildID),
+		Description: fmt.Sprintf("To embed this iFrame, simply add the following code: ```html\n" + `<iframe src="https:/slimwidgets.io/widget/%s" width="417" height="194" allowtransparency="true" frameborder="0"></iframe>` + "\n```", msg.GuildID),
 		Color: 255,
 	}, MenuButton{
 		Emoji:       "🔗",
