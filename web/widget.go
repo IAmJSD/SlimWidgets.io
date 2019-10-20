@@ -16,6 +16,7 @@ func WidgetJSON(ctx *fasthttp.RequestCtx) {
 		ctx.Response.SetStatusCode(200)
 	}
 	ctx.Response.Header.Set("Access-Control-Allow-Origin", "*")
+	ctx.Response.Header.Set("Content-Type", "application/json")
 	b, err := json.Marshal(&Guild)
 	if err != nil {
 		panic(err)
