@@ -26,7 +26,7 @@ func GetGuild(GuildID string) *GuildInfo {
 	if err != nil {
 		return nil
 	}
-	reply, err := NATSClient.Request("get-guild", []byte(GuildID), 5 * time.Second)
+	reply, err := NATSClient.Request("guild-get", []byte(GuildID), 5 * time.Second)
 	if err != nil {
 		panic(err)
 	}
