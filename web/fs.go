@@ -5,6 +5,7 @@ import "io/ioutil"
 var (
 	WidgetTemplate string
 	InviteTemplate string
+	IndexHTML []byte
 )
 
 func FSInit() {
@@ -19,4 +20,10 @@ func FSInit() {
 		panic(err)
 	}
 	InviteTemplate = string(w)
+
+	w, err = ioutil.ReadFile("./templates/index.html")
+	if err != nil {
+		panic(err)
+	}
+	IndexHTML = w
 }
