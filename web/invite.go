@@ -57,7 +57,7 @@ func InviteCaptchaHandler(ctx *fasthttp.RequestCtx) {
 	err := CAPTCHA.Verify(CaptchaResult)
 	if err != nil {
 		ctx.Response.SetStatusCode(400)
-		ctx.SetBody([]byte("Invalid reCaptcha."))
+		ctx.SetBody([]byte(err.Error()))
 		return
 	}
 
