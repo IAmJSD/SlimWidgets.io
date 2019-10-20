@@ -2,14 +2,13 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
+	"fmt"
 	"github.com/valyala/fasthttp"
-	"gopkg.in/ezzarghili/recaptcha-go.v3"
+	"net/http"
 	"os"
 	"text/template"
-	"time"
 )
-
-var CAPTCHA, _ = recaptcha.NewReCAPTCHA(os.Getenv("RECAPTCHA_SECRET_KEY"), recaptcha.V2, 10 * time.Second)
 
 func InviteHTML(ctx *fasthttp.RequestCtx) {
 	GuildID := ctx.UserValue("guildId").(string)
@@ -39,8 +38,8 @@ func InviteHTML(ctx *fasthttp.RequestCtx) {
 }
 
 func InviteCaptchaHandler(ctx *fasthttp.RequestCtx) {
-	CaptchaResult := ctx.UserValue("captchaResult").(string)
 	GuildID := ctx.UserValue("guildId").(string)
+	CaptchaResult := ctx.UserValue("captchaResult").(string)
 
 	Guild := GetGuild(GuildID)
 	if Guild == nil {
@@ -54,10 +53,32 @@ func InviteCaptchaHandler(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	err := CAPTCHA.Verify(CaptchaResult)
+	b, err := json.Marshal(&map[string]interface{}{
+		"secret": os.Getenv("RECAPTCHA_SECRET_KEY"),
+		"response": CaptchaResult,
+	})
 	if err != nil {
+		panic(err)
+	}
+	resp, err := http.Post("https://www.google.com/recaptcha/api/siteverify", "application/json", bytes.NewBuffer(b))
+	if err != nil {
+		panic(err)
+	}
+	var Response map[string]interface{}
+	var RawBody []byte
+	defer resp.Body.Close()
+	_, err = resp.Body.Read(RawBody)
+	if err != nil {
+		panic(err)
+	}
+	err = json.Unmarshal(RawBody, &Response)
+	if err != nil {
+		panic(err)
+	}
+
+	if !Response["success"].(bool) {
 		ctx.Response.SetStatusCode(400)
-		ctx.SetBody([]byte(err.Error()))
+		ctx.SetBody([]byte(fmt.Sprintf("%v", Response["error-codes"].([]string))))
 		return
 	}
 
