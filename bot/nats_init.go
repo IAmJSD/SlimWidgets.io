@@ -57,9 +57,17 @@ func NATSInit(session *discordgo.Session, nc *nats.Conn) {
 		if err != nil {
 			panic(err)
 		}
-		err = cursor.One(&Guild)
-		if err != nil {
-			panic(err)
+		if cursor.IsNil() {
+			Guild = GuildDB{
+				Id:          GuildStr,
+				Description: nil,
+				Invites:     false,
+			}
+		} else {
+			err = cursor.One(&Guild)
+			if err != nil {
+				panic(err)
+			}
 		}
 		Online := 0
 		Offline := 0

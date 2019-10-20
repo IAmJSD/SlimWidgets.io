@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"github.com/google/uuid"
-	r "gopkg.in/rethinkdb/rethinkdb-go.v5"
 )
 
 func SetPresence(client *discordgo.Session) {
@@ -16,24 +15,6 @@ func SetPresence(client *discordgo.Session) {
 
 func OnReady(client *discordgo.Session, _ *discordgo.Ready) {
 	SetPresence(client)
-}
-
-func OnGuildJoin(_ *discordgo.Session, Guild *discordgo.UserGuild) {
-	_, err := r.Table("guilds").Insert(&GuildDB{
-		Id:          Guild.ID,
-		Description: nil,
-		Invites:     false,
-	}).Run(RethinkConnection)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func OnGuildDelete(_ *discordgo.Session, Guild *discordgo.GuildDelete) {
-	_, err := r.Table("guilds").Get(Guild.ID).Delete().Run(RethinkConnection)
-	if err != nil {
-		panic(err)
-	}
 }
 
 func OnMessage(client *discordgo.Session, msg *discordgo.MessageCreate) {

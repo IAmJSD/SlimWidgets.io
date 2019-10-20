@@ -12,9 +12,21 @@ func CreateNewMenu(MenuID string, msg discordgo.Message, client *discordgo.Sessi
 	if err != nil {
 		panic(err)
 	}
-	err = cursor.One(&Guild)
-	if err != nil {
-		panic(err)
+	if cursor.IsNil() {
+		Guild = GuildDB{
+			Id:          msg.GuildID,
+			Description: nil,
+			Invites:     false,
+		}
+		_, err := r.Table("guilds").Insert(&Guild).Run(RethinkConnection)
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		err = cursor.One(&Guild)
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	ToggleInvites := func(ChannelID string, MessageID string, menu *EmbedMenu, client *discordgo.Session) {
