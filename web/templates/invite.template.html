@@ -23,7 +23,7 @@
         <script>
             // Handles the reCaptcha submit.
             function captchaSubmit(data) {
-                window.location.replace("./" + encodeURIComponent(data));
+                window.location.replace(window.location.href.replace(/\/$/g, "") + "/" + encodeURIComponent(data));
             }
         </script>
     </body>
