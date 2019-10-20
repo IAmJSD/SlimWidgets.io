@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/valyala/fasthttp"
+	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"text/template"
 )
@@ -53,21 +55,20 @@ func InviteCaptchaHandler(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	b, err := json.Marshal(&map[string]interface{}{
-		"secret": os.Getenv("RECAPTCHA_SECRET_KEY"),
-		"response": CaptchaResult,
+	resp, err := http.PostForm("https://www.google.com/recaptcha/api/siteverify", url.Values{
+		"secret": {
+			os.Getenv("RECAPTCHA_SECRET_KEY"),
+		},
+		"response": {
+			CaptchaResult,
+		},
 	})
 	if err != nil {
 		panic(err)
 	}
-	resp, err := http.Post("https://www.google.com/recaptcha/api/siteverify", "application/json", bytes.NewBuffer(b))
-	if err != nil {
-		panic(err)
-	}
 	var Response map[string]interface{}
-	var RawBody []byte
 	defer resp.Body.Close()
-	_, err = resp.Body.Read(RawBody)
+	RawBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		panic(err)
 	}
