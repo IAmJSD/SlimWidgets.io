@@ -18,7 +18,7 @@ func OnReady(client *discordgo.Session, _ *discordgo.Ready) {
 	SetPresence(client)
 }
 
-func OnGuildCreate(client *discordgo.Session, Guild *discordgo.GuildCreate) {
+func OnGuildJoin(client *discordgo.Session, Guild *discordgo.UserGuild) {
 	_, err := r.Table("guilds").Insert(&GuildDB{
 		Id:          Guild.ID,
 		Description: nil,
