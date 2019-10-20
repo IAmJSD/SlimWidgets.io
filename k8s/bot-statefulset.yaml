@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: slimwidgets-bot
+spec:
+  replicas: 1
+  serviceName: slimwidgets-bot
+  selector:
+    matchLabels:
+      run: slimwidgets-bot
+  template:
+    metadata:
+      labels:
+        run: slimwidgets-bot
+    spec:
+      containers:
+        - name: jakegealer-me
+          image: docker.pkg.github.com/jakemakesstuff/slimwidgets.io/bot
+          imagePullPolicy: Always
+          env:
+            - name: DISCORD_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: slimwidgets
+                  key: discord_token
+            - name: NATS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: slimwidgets
+                  key: nats_host
+            - name: RETHINK_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: slimwidgets
+                  key: rethink_host
+            - name: RETHINK_USER
+              valueFrom:
+                secretKeyRef:
+                  name: slimwidgets
+                  key: rethink_user
+            - name: RETHINK_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: slimwidgets
+                  key: rethink_password

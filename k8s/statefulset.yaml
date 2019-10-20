@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: slimwidgets-web
+spec:
+  replicas: 2
+  serviceName: slimwidgets-web
+  selector:
+    matchLabels:
+      run: slimwidgets-web
+  template:
+    metadata:
+      labels:
+        run: slimwidgets-web
+    spec:
+      containers:
+        - name: slimwidgets-web
+          image: docker.pkg.github.com/jakemakesstuff/slimwidgets.io/web
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DISCORD_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: slimwidgets
+                  key: discord_token
+            - name: NATS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: slimwidgets
+                  key: nats_host
+            - name: RECAPTCHA_SITE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: slimwidgets
+                  key: recaptcha_site_key
+            - name: RECAPTCHA_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: slimwidgets
+                  key: recaptcha_secret_key

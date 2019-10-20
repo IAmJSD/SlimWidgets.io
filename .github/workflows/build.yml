@@ -1,0 +1,24 @@
+name: Build and deploy to the Kubernetes cluster
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Login to Docker
+        run: docker login docker.pkg.github.com --username RepoOwner --password "${GITHUB_TOKEN}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build the bot and deploy it to Docker
+        run: cd ./bot && docker build . -t docker.pkg.github.com/jakemakesstuff/slimwidgets.io/bot && docker push docker.pkg.github.com/jakemakesstuff/slimwidgets.io/bot && cd ..
+
+      - name: Build the web and deploy it to Docker
+        run: cd ./bot && docker build . -t docker.pkg.github.com/jakemakesstuff/slimwidgets.io/web && docker push docker.pkg.github.com/jakemakesstuff/slimwidgets.io/web && cd ..
