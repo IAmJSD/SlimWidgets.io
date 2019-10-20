@@ -5,7 +5,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-var MenuCache map[string]*EmbedMenu
+var MenuCache = map[string]*EmbedMenu{}
 
 type MenuInfo struct {
 	MenuID string

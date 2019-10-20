@@ -22,3 +22,16 @@ jobs:
 
       - name: Build the web and deploy it to Docker
         run: cd ./web && docker build . -t docker.pkg.github.com/jakemakesstuff/slimwidgets.io/web && docker push docker.pkg.github.com/jakemakesstuff/slimwidgets.io/web && cd ..
+
+      - name: Deploy changes to Kubernetes
+        run: |
+          wget --header "Content-Type: application/json" --header "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/kubernetes/clusters/b9a8389f-646a-47ba-85ec-ec2de6866e75/kubeconfig"
+          kubectl --kubeconfig=./kubeconfig apply -f ./k8s/bot-statefulset.yaml
+          kubectl --kubeconfig=./kubeconfig apply -f ./k8s/ingress.yaml
+          kubectl --kubeconfig=./kubeconfig apply -f ./k8s/service.yaml
+          kubectl --kubeconfig=./kubeconfig apply -f ./k8s/statefulset.yaml
+          kubectl --kubeconfig=./kubeconfig rollout restart statefulset/slimwidgets-web
+          kubectl --kubeconfig=./kubeconfig rollout restart statefulset/slimwidgets-bot
+          rm ./kubeconfig
+        env:
+          DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
