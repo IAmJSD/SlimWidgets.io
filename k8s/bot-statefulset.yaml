@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: jakegealer-me
-          image: docker.pkg.github.com/jakemakesstuff/slimwidgets.io/bot
+          image: docker.pkg.github.com/jakemakesstuff/slimwidgets.io/bot:latest
           imagePullPolicy: Always
           env:
             - name: DISCORD_TOKEN
@@ -43,3 +43,5 @@ spec:
                 secretKeyRef:
                   name: slimwidgets
                   key: rethink_password
+      imagePullSecrets:
+        - name: github
