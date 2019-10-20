@@ -7,7 +7,7 @@ import (
 )
 
 func SetPresence(client *discordgo.Session) {
-	err := client.UpdateStatus(0, "slimwidgets.io | Tag me to configure!")
+	err := client.UpdateStatus(0, "Tag me to configure! | slimwidgets.io")
 	if err != nil {
 		fmt.Println("Error setting game: ", err)
 	}
