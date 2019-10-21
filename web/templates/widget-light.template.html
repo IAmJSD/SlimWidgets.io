@@ -10,8 +10,8 @@
       }
 
       body {
-        background-color: #1A202C;
-        color: #F7FAFC;
+        background-color: #F7FAFC;
+        color: #1A202C;
         font-family: 'Trebuchet MS', 'Tahoma', 'Arial', sans-serif;
         padding: 0;
       }
@@ -30,7 +30,7 @@
       main h1#guild-name {
         font-size: 1.75em;
         font-weight: bolder;
-        color: #EDF2F7;
+        color: #2D3748;
       }
 
       main h3#guild-desc {
@@ -67,7 +67,7 @@
       }
 
       footer a#join-link {
-        color: #E9D8FD;
+        color: #553C9A;
         text-decoration: none;
         font-size: 1.5em;
         font-weight: bolder;
@@ -83,7 +83,7 @@
       }
 
       footer a#join-link:hover {
-        color: #D6BCFA;
+        color: #44337A;
       }
 
       footer a#join-link:hover span {
@@ -107,9 +107,9 @@
 
     <footer>
       <aside id="stats">
-        <p style="color: #F0FFF4;"><span style="color: #C6F6D5;" id="js-online">{{ .Counts.Online }}</span>online</p>
-        <p style="color: #FFF5F5;"><span style="color: #FED7D7;" id="js-offline">{{ .Counts.Offline }}</span>offline</p>
-        <p style="color: #EBF8FF;"><span style="color: #BEE3F8;" id="js-invoice">{{ .Counts.InVoice }}</span>in voice</p>
+        <p style="color: #2F855A;"><span style="color: #22543D;" id="js-online">{{ .Counts.Online }}</span>online</p>
+        <p style="color: #C53030;"><span style="color: #742A2A;" id="js-offline">{{ .Counts.Offline }}</span>offline</p>
+        <p style="color: #2B6CB0;"><span style="color: #2A4365;" id="js-invoice">{{ .Counts.InVoice }}</span>in voice</p>
       </aside>
 
       {{ if .InviteURL }}
