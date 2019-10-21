@@ -81,7 +81,7 @@ func CreateNewMenu(MenuID string, msg discordgo.Message, client *discordgo.Sessi
 	MainMenu := NewEmbedMenu(
 		discordgo.MessageEmbed{
 			Title: "SlimWidgets Manager",
-			Description: "Using this bot, you can configure your SlimWidgets instance.",
+			Description: "Using this bot, you can configure your SlimWidgets instance. [To add this bot to your guild, check out our website here.](https://slimwidgets.io/)",
 			Color: 255,
 		}, &MenuInfo{
 			MenuID: MenuID,
