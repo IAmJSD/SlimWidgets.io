@@ -28,7 +28,7 @@ func GetGuild(GuildID string) *GuildInfo {
 	}
 	reply, err := NATSClient.Request("guild-get", []byte(GuildID), 5 * time.Second)
 	if err != nil {
-		panic(err)
+		return nil
 	}
 	var Guild *GuildInfo
 	err = json.Unmarshal(reply.Data, &Guild)
