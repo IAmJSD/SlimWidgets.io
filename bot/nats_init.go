@@ -101,10 +101,7 @@ func NATSInit(session *discordgo.Session, nc *nats.Conn) {
 		if err != nil {
 			panic(err)
 		}
-		err = m.Respond(b)
-		if err != nil {
-			panic(err)
-		}
+		m.Respond(b)
 	})
 	if err != nil {
 		panic(err)
