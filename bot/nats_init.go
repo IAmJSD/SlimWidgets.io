@@ -73,7 +73,12 @@ func NATSInit(session *discordgo.Session, nc *nats.Conn) {
 		Online := len(DiscordGuild.Presences)
 		Offline := DiscordGuild.MemberCount - Online
 
-		DefaultChannel := DiscordGuild.Channels[0].ID
+		var DefaultChannel string
+		if len(DiscordGuild.Channels) == 0 {
+			DefaultChannel = ""
+		} else {
+			DefaultChannel = DiscordGuild.Channels[0].ID
+		}
 		for _, v := range DiscordGuild.Channels {
 			if strings.Contains(strings.ToLower(v.Name), "rules") || strings.Contains(strings.ToLower(v.Name), "general") {
 				DefaultChannel = v.ID
